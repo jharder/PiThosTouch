@@ -70,11 +70,12 @@ class FullscreenPithosPandora:
 
         self.loadUsers()
         numRows = self.countRows(self.orderedUsers)
-
+        self.clearFrame(self.mainFrame)
         self.createButtonRows(numRows, self.orderedUsers)
 
     def countRows(self, entries):
-        return math.ceil(len(entries) / self.maxButtonsPerRow)
+        # Always add an extra row at the bottom for navigation
+        return (math.ceil(len(entries) / self.maxButtonsPerRow)) + 1
 
     def createButtonRows(self, numRows, data):
         bigFont = Font.Font(size = 40)
@@ -82,7 +83,6 @@ class FullscreenPithosPandora:
         buttonPadWidth = int(self.screenWidth * self.paddingPercent)
         buttonHeight = int(self.screenHeight / numRows) - (2 * buttonPadHeight)
         buttonWidth = int(self.screenWidth / self.maxButtonsPerRow) - (2 * buttonPadWidth)
-        #print(buttonPadHeight, buttonPadWidth, buttonHeight, buttonWidth)
 
         rows = 0
         inserted = 0
@@ -110,6 +110,14 @@ class FullscreenPithosPandora:
                 ).pack(side = LEFT, padx = buttonPadWidth, \
                     pady = buttonPadHeight, fill = BOTH)
             inserted += 1
+
+        selectedRow += 1
+        Button2(self.frameArray[selectedRow], width = buttonWidth, \
+                height = self.screenHeight * 0.05, text = "Quit", \
+                command = self.displayLoginInterface, \
+                anchor = CENTER, wraplength = buttonWidth
+                ).pack(side = LEFT, padx = buttonPadWidth * 0.05, \
+                    pady = buttonPadHeight * 0.05, fill = X)
 
     def clearFrame(main, frame):
         for widget in frame.winfo_children():
